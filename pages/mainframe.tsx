@@ -91,7 +91,7 @@ export default function Mainframe() {
                       <div className='flex p-2 justify-center'>
                         <div className='flex flex-col h-64 w-64 bg-black/20 relative rounded'>
                           <div className='absolute bottom-2 left-2 flex flex-col space-y-2'>
-                            <h3 className='text-[18px] font-light uppercase'>{'test'}</h3>
+                            {/* <h3 className='text-[18px] font-light uppercase'>{myNftList[0].contractName}</h3> */}
                             <p>Price</p>
                           </div>
                         </div>
