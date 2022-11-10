@@ -32,20 +32,9 @@ interface NftCollection  {
   items: Nft[];
 }
 
-interface SelectedNftCollection  {
-  contractName: string;
-  contractSymbol: string;
-  contractAddress: string;
-  tokenType: TokenTypes;
-  nftVersion: string;
-  nftDescription: string;
-  balance: number;
-  items: Nft[];
-}
-
 export default function Mainframe() {
   const [allNfts, setAllNfts] = useState<(NftCollection[])>([]);
-  const [selectNfts, setSelectNfts] = useState<(SelectedNftCollection[])>([]);
+  const [selectNfts, setSelectNfts] = useState<(Nft[] | undefined)>();
   const [isLoading, setIsLoading] = useState(false);
   const [queryContract, setQueryContract] = useState('0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85');
 
@@ -72,12 +61,15 @@ export default function Mainframe() {
     setAllNfts(list.items);
 
     console.log('------- Nft List', {allNfts});
+    const tokens = {allNfts};
+    getCertainNfts();
   }
 
-  const getCertainNfts = async ({list}:any) => {
-    const getCertainNfts = list.items.filter((nft:any) => nft.contractAddress === queryContract);
+  const getCertainNfts = async () => {
 
-    console.log('A LIST OF A CERTAIN PROJECTs NFTS!', getCertainNfts[0].items);
+    const contract = allNfts.filter((nft:NftCollection) => nft.contractAddress === queryContract);
+    setSelectNfts(contract[0].items);
+    console.log('A LIST OF A CERTAIN PROJECTs NFTS!', selectNfts);
   };
 
   useEffect(()=>{
@@ -114,14 +106,16 @@ export default function Mainframe() {
                 <div className='flex flex-col w-full min-h-screen relative'>
                   <div className='flex flex-col p-2 w-full h-full absolute items-center bg-green-600/10 border-2 border-green-700/20'>
                     <div className='grid grid-cols-2 justify-center items-center w-full'>
-                      <div className='flex p-2 justify-center'>
-                        <div className='flex flex-col h-64 w-64 bg-black/20 relative rounded'>
-                          <div className='absolute bottom-2 left-2 flex flex-col space-y-2'>
-                            {/* <h3 className='text-[18px] font-light uppercase'>{allNfts[0].contractName}</h3> */}
-                            <p>Price</p>
+                      {selectNfts?.map((nft)=>(
+                        <div key={nft.tokenId} className='flex p-2 justify-center'>
+                          <div className='flex flex-col h-64 w-64 bg-black/20 relative rounded'>
+                            <div className='absolute bottom-2 left-2 flex flex-col space-y-2'>
+                              <h3 className='text-[18px] font-light uppercase'>{nft.name}</h3>
+                              <p>1 ETH</p>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      ))}
                       <div className='flex p-2 justify-center'>
                         <div className='flex flex-col h-64 w-64 bg-black/20 relative rounded'>
                           <div className='absolute bottom-2 left-2 flex flex-col space-y-2'>
