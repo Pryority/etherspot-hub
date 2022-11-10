@@ -1,12 +1,12 @@
 import React from 'react';
 
-const MyNFTPanel = ({myNftList}) => {
+const MyNFTPanel = ({allNfts}) => {
   return (
     <div className='flex flex-col relative'>
-      {myNftList ? 
+      {allNfts ? 
         (
           <div className='flex flex-col p-4 absolute top-0 left-0 mx-auto'>
-            {myNftList.map((nft, i) => (
+            {allNfts.map((nft, i) => (
               <div 
                 key={i}
                 className='p-[3.34px] hover:p-[4.25] hover:bg-green-600/10 hover:pr-8'

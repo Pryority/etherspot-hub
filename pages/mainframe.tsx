@@ -32,10 +32,23 @@ interface NftCollection  {
   items: Nft[];
 }
 
+interface SelectedNftCollection  {
+  contractName: string;
+  contractSymbol: string;
+  contractAddress: string;
+  tokenType: TokenTypes;
+  nftVersion: string;
+  nftDescription: string;
+  balance: number;
+  items: Nft[];
+}
+
 export default function Mainframe() {
-  const [myNftList, setMyNftList] = useState<(NftCollection[])>([]);
+  const [allNfts, setAllNfts] = useState<(NftCollection[])>([]);
+  const [selectNfts, setSelectNfts] = useState<(SelectedNftCollection[])>([]);
   const [isLoading, setIsLoading] = useState(false);
-  
+  const [queryContract, setQueryContract] = useState('0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85');
+
   async function main() {
     if (!MetaMaskWalletProvider.detect()) {
       console.log('MetaMask not detected');
@@ -56,10 +69,16 @@ export default function Mainframe() {
       account: '0xA7B0BE5E0EC112c72096A43211Db3508D175F454',
     });
     
-    setMyNftList(list.items);
+    setAllNfts(list.items);
 
-    console.log('------- Nft List', myNftList);
+    console.log('------- Nft List', {allNfts});
   }
+
+  const getCertainNfts = async ({list}:any) => {
+    const getCertainNfts = list.items.filter((nft:any) => nft.contractAddress === queryContract);
+
+    console.log('A LIST OF A CERTAIN PROJECTs NFTS!', getCertainNfts[0].items);
+  };
 
   useEffect(()=>{
     main().catch(console.error);
@@ -67,10 +86,17 @@ export default function Mainframe() {
   
   return (
     <div className='flex flex-col min-h-screen w-full items-center justify-center bg-gradient-to-b from-transparent to-green-100/10'>
-      <Head>
-        <meta name="description" content="All Products" />
-        <Navbar/>
-      </Head>
+
+      <Navbar/>
+
+      <input
+        value={queryContract}
+        onChange={(e) => setQueryContract(e.target.value)}
+        type="text"
+        placeholder="Enter an NFT Smart Contract Address (eg. 0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85)"
+        className={`placeholder:text-gray-600 flex w-5/6 mx-auto text-primary rounded-md h-12 p-2 bg-1 verification-outline border ${queryContract ? 'border-lime-500 border-solid' : 'hover:border-solid hover:border-stone-300'} focus:outline-none`}
+      />
+      
       <main className='flex flex-col min-h-screen w-full'>
         {isLoading ? (
           <>
@@ -81,7 +107,7 @@ export default function Mainframe() {
           (
             <div className='grid grid-cols-8 w-full h-full'>
               <section className='col-span-3 flex flex-col h-full w-full'>
-                <MyNFTPanel myNftList={myNftList}/>
+                <MyNFTPanel allNfts={allNfts}/>
               </section>
               {/* PRODUCTS PANEL */}
               <section className='flex flex-col col-span-5 w-full h-full p-4'>
@@ -91,7 +117,7 @@ export default function Mainframe() {
                       <div className='flex p-2 justify-center'>
                         <div className='flex flex-col h-64 w-64 bg-black/20 relative rounded'>
                           <div className='absolute bottom-2 left-2 flex flex-col space-y-2'>
-                            {/* <h3 className='text-[18px] font-light uppercase'>{myNftList[0].contractName}</h3> */}
+                            {/* <h3 className='text-[18px] font-light uppercase'>{allNfts[0].contractName}</h3> */}
                             <p>Price</p>
                           </div>
                         </div>
