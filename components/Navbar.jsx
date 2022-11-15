@@ -4,10 +4,10 @@ import { useRouter } from 'next/router';
 
 const Navbar = () => {
   const menus = [
-    { tabName: 'HOME', pageName: '/create-proposal' },
-    { tabName: 'LEARN', pageName: '/proposals' },
-    { tabName: 'MINT', pageName: '/SelectId' },
-    { tabName: 'PROFILE', pageName: '/' },
+    { tabName: 'HOME', pageName: '/' },
+    { tabName: 'LEARN', pageName: '/learn' },
+    { tabName: 'MINT', pageName: '/mint' },
+    { tabName: 'PROFILE', pageName: '/profile' },
   ];
   const pathname  = useRouter();
   return(
