@@ -71,14 +71,6 @@ export default function Mainframe() {
     setQueryContract(address);
     console.log(queryContract);
   };
-  // const updateContract = (address:string) => {
-  //   if (!address) {
-  //     console.log('no address');
-  //     return;
-  //   }
-  //   setQueryContract(address);
-  //   console.log(queryContract);
-  // };
 
   useEffect(()=>{
     main().catch(console.error);
