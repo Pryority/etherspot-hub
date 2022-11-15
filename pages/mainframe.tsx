@@ -49,7 +49,7 @@ export default function Mainframe() {
   
     console.log('🚹 ------- account', account);
 
-    getNfts(sdk, account.address);
+    getNfts(sdk, `0x${account.address}`);
   }
 
   const setCollection = async (list:any) => {
@@ -107,7 +107,7 @@ export default function Mainframe() {
           (
             <div className='grid grid-cols-8 w-full h-full'>
               <section className='col-span-3 flex flex-col h-full w-full'>
-                <MyNFTPanel nftList={getNfts} />
+                <MyNFTPanel nftList={nftList?.items} />
               </section>
               {/* PRODUCTS PANEL */}
               <section className='flex flex-col col-span-5 w-full h-full p-4'>
